@@ -1,74 +1,74 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>工业产品质量检测系统</title>
+    <title>Industrial Product Quality Detection System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>工业产品质量检测系统</h1>
-            <p class="subtitle">基于计算机视觉和机器学习的智能检测</p>
+            <h1>Industrial Product Quality Detection System</h1>
+            <p class="subtitle">Intelligent Detection Based on Computer Vision and Machine Learning</p>
         </header>
 
         <div class="main-content">
-            <!-- 统计信息卡片 -->
+            <!-- Statistics Cards -->
             <div class="stats-section">
                 <div class="stat-card">
                     <div class="stat-icon">📊</div>
                     <div class="stat-value" id="statTotal">{{ stats.total }}</div>
-                    <div class="stat-label">总检测次数</div>
+                    <div class="stat-label">Total Detections</div>
                 </div>
                 <div class="stat-card success">
                     <div class="stat-icon">✅</div>
                     <div class="stat-value" id="statPassed">{{ stats.passed }}</div>
-                    <div class="stat-label">合格数量</div>
+                    <div class="stat-label">Passed</div>
                 </div>
                 <div class="stat-card danger">
                     <div class="stat-icon">❌</div>
                     <div class="stat-value" id="statFailed">{{ stats.failed }}</div>
-                    <div class="stat-label">不合格数量</div>
+                    <div class="stat-label">Failed</div>
                 </div>
                 <div class="stat-card info">
                     <div class="stat-icon">📈</div>
                     <div class="stat-value" id="statPassRate">{{ "%.1f"|format(stats.pass_rate) }}%</div>
-                    <div class="stat-label">合格率</div>
+                    <div class="stat-label">Pass Rate</div>
                 </div>
             </div>
 
-            <!-- 检测区域 -->
+            <!-- Detection Section -->
             <div class="detection-section">
                 <div class="camera-panel">
-                    <h2>实时检测</h2>
+                    <h2>Real-time Detection</h2>
                     <div class="video-container">
                         <video id="videoElement" autoplay playsinline></video>
                         <canvas id="canvasElement" style="display: none;"></canvas>
                         <div id="noVideo" class="no-video-message">
-                            <p>📷 点击"开始检测"启动摄像头</p>
+                            <p>📷 Click "Start Detection" to activate camera</p>
                         </div>
                     </div>
                     <div class="control-buttons">
-                        <button id="startBtn" class="btn btn-primary">开始检测</button>
-                        <button id="captureBtn" class="btn btn-success" disabled>拍摄并检测</button>
-                        <button id="stopBtn" class="btn btn-danger" disabled>停止检测</button>
+                        <button id="startBtn" class="btn btn-primary">Start Detection</button>
+                        <button id="captureBtn" class="btn btn-success" disabled>Capture & Detect</button>
+                        <button id="stopBtn" class="btn btn-danger" disabled>Stop Detection</button>
                     </div>
                 </div>
 
                 <div class="result-panel">
-                    <h2>检测结果</h2>
+                    <h2>Detection Result</h2>
                     <div id="resultContainer" class="result-container">
                         <div class="placeholder-message">
-                            <p>等待检测...</p>
+                            <p>Waiting for detection...</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 导航链接 -->
+            <!-- Navigation Links -->
             <div class="nav-section">
-                <a href="/history" class="btn btn-secondary">查看检测历史</a>
+                <a href="/history" class="btn btn-secondary">View Detection History</a>
             </div>
         </div>
     </div>

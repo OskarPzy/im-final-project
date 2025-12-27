@@ -38,38 +38,38 @@ startBtn.addEventListener('click', async () => {
             captureBtn.disabled = false;
             stopBtn.disabled = false;
             
-            showMessage('摄像头已启动', 'success');
+            showMessage('Camera started', 'success');
         } else {
-            showMessage(data.message || '摄像头初始化失败', 'error');
+            showMessage(data.message || 'Camera initialization failed', 'error');
         }
     } catch (error) {
-        console.error('摄像头启动错误:', error);
-        showMessage('无法访问摄像头，请检查权限设置', 'error');
+        console.error('Camera startup error:', error);
+        showMessage('Unable to access camera, please check permissions', 'error');
     }
 });
 
-// 拍摄并检测
+// Capture and detect
 captureBtn.addEventListener('click', async () => {
     if (!stream) {
-        showMessage('请先启动摄像头', 'error');
+        showMessage('Please start the camera first', 'error');
         return;
     }
     
     try {
-        // 在canvas上绘制当前视频帧
+        // Draw current video frame on canvas
         const ctx = canvasElement.getContext('2d');
         canvasElement.width = videoElement.videoWidth;
         canvasElement.height = videoElement.videoHeight;
         ctx.drawImage(videoElement, 0, 0);
         
-        // 转换为base64
+        // Convert to base64
         const imageData = canvasElement.toDataURL('image/jpeg', 0.8);
         
-        // 显示加载状态
-        resultContainer.innerHTML = '<div class="placeholder-message"><p>正在检测中...</p></div>';
+        // Show loading state
+        resultContainer.innerHTML = '<div class="placeholder-message"><p>Detecting...</p></div>';
         captureBtn.disabled = true;
         
-        // 发送到后端进行检测
+        // Send to backend for detection
         const response = await fetch('/api/detect', {
             method: 'POST',
             headers: {
@@ -85,15 +85,15 @@ captureBtn.addEventListener('click', async () => {
         
         if (data.success) {
             displayResult(data.result);
-            // 刷新统计信息
+            // Refresh statistics
             updateStatistics();
         } else {
-            showMessage(data.message || '检测失败', 'error');
-            resultContainer.innerHTML = '<div class="placeholder-message"><p>检测失败，请重试</p></div>';
+            showMessage(data.message || 'Detection failed', 'error');
+            resultContainer.innerHTML = '<div class="placeholder-message"><p>Detection failed, please retry</p></div>';
         }
     } catch (error) {
-        console.error('检测错误:', error);
-        showMessage('检测过程中发生错误', 'error');
+        console.error('Detection error:', error);
+        showMessage('Error occurred during detection', 'error');
         captureBtn.disabled = false;
     }
 });
@@ -118,33 +118,33 @@ stopBtn.addEventListener('click', () => {
     captureBtn.disabled = true;
     stopBtn.disabled = true;
     
-    showMessage('摄像头已关闭', 'info');
+    showMessage('Camera closed', 'info');
 });
 
-// 显示检测结果
+// Display detection result
 function displayResult(result) {
     const qualified = result.qualified;
     const qualityScore = result.quality_score;
-    const defectType = result.defect_type || '无';
+    const defectType = result.defect_type || 'None';
     const confidence = (result.confidence * 100).toFixed(1);
     
     let html = `
         <div class="result-item ${qualified ? 'success' : 'danger'}">
-            <div class="result-label">检测结果</div>
+            <div class="result-label">Detection Result</div>
             <div class="result-value">
                 <span class="badge ${qualified ? 'badge-success' : 'badge-danger'}">
-                    ${qualified ? '✅ 合格' : '❌ 不合格'}
+                    ${qualified ? '✅ Passed' : '❌ Failed'}
                 </span>
             </div>
         </div>
         
         <div class="result-item">
-            <div class="result-label">质量分数</div>
+            <div class="result-label">Quality Score</div>
             <div class="result-value">${qualityScore} / 100</div>
         </div>
         
         <div class="result-item">
-            <div class="result-label">置信度</div>
+            <div class="result-label">Confidence</div>
             <div class="result-value">${confidence}%</div>
         </div>
     `;
@@ -152,7 +152,7 @@ function displayResult(result) {
     if (!qualified) {
         html += `
             <div class="result-item danger">
-                <div class="result-label">缺陷类型</div>
+                <div class="result-label">Defect Type</div>
                 <div class="result-value">${defectType}</div>
             </div>
         `;
@@ -181,8 +181,8 @@ async function updateStatistics() {
             if (statPassRate) statPassRate.textContent = stats.pass_rate.toFixed(1) + '%';
         }
     } catch (error) {
-        console.error('更新统计信息失败:', error);
-        // 静默失败，不影响检测结果显示
+        console.error('Failed to update statistics:', error);
+        // Silent failure, don't affect detection result display
     }
 }
 

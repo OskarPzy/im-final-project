@@ -27,13 +27,13 @@ async function initChart() {
                 chart.destroy();
             }
             
-            // 创建新图表
+            // Create new chart
             chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['总检测次数', '合格数量', '不合格数量'],
+                    labels: ['Total Detections', 'Passed', 'Failed'],
                     datasets: [{
-                        label: '检测统计',
+                        label: 'Detection Statistics',
                         data: [stats.total, stats.passed, stats.failed],
                         backgroundColor: [
                             'rgba(102, 126, 234, 0.8)',
@@ -57,7 +57,7 @@ async function initChart() {
                         },
                         title: {
                             display: true,
-                            text: '检测数据统计',
+                            text: 'Detection Data Statistics',
                             font: {
                                 size: 18
                             }
@@ -78,7 +78,7 @@ async function initChart() {
             createPieChart(stats);
         }
     } catch (error) {
-        console.error('加载统计数据失败:', error);
+        console.error('Failed to load statistics:', error);
     }
 }
 
@@ -98,7 +98,7 @@ function createPieChart(stats) {
     const pieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ['合格', '不合格'],
+            labels: ['Passed', 'Failed'],
             datasets: [{
                 data: [stats.passed, stats.failed],
                 backgroundColor: [
@@ -118,7 +118,7 @@ function createPieChart(stats) {
             plugins: {
                 title: {
                     display: true,
-                    text: `合格率: ${stats.pass_rate.toFixed(1)}%`,
+                    text: `Pass Rate: ${stats.pass_rate.toFixed(1)}%`,
                     font: {
                         size: 18
                     }

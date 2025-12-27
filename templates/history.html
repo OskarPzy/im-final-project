@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>检测历史 - 工业产品质量检测系统</title>
+    <title>Detection History - Industrial Product Quality Detection System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>检测历史记录</h1>
-            <p class="subtitle">查看所有历史检测数据</p>
+            <h1>Detection History</h1>
+            <p class="subtitle">View All Historical Detection Data</p>
         </header>
 
         <div class="main-content">
             <div class="history-controls">
-                <a href="/" class="btn btn-primary">返回主页</a>
-                <button id="refreshBtn" class="btn btn-secondary">刷新数据</button>
+                <a href="/" class="btn btn-primary">Back to Home</a>
+                <button id="refreshBtn" class="btn btn-secondary">Refresh Data</button>
             </div>
 
             <div class="history-table-container">
@@ -24,32 +24,32 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>检测时间</th>
-                            <th>检测结果</th>
-                            <th>质量分数</th>
-                            <th>缺陷类型</th>
-                            <th>置信度</th>
+                            <th>Detection Time</th>
+                            <th>Result</th>
+                            <th>Quality Score</th>
+                            <th>Defect Type</th>
+                            <th>Confidence</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody">
                         {% if records %}
                             {% for record in records %}
-                            <tr class="{% if record[2] == '合格' %}row-success{% else %}row-danger{% endif %}">
+                            <tr class="{% if record[2] == 'Passed' or record[2] == '合格' %}row-success{% else %}row-danger{% endif %}">
                                 <td>{{ record[0] }}</td>
                                 <td>{{ record[1] }}</td>
                                 <td>
-                                    <span class="badge {% if record[2] == '合格' %}badge-success{% else %}badge-danger{% endif %}">
-                                        {{ record[2] }}
+                                    <span class="badge {% if record[2] == 'Passed' or record[2] == '合格' %}badge-success{% else %}badge-danger{% endif %}">
+                                        {{ 'Passed' if record[2] == '合格' else ('Failed' if record[2] == '不合格' else record[2]) }}
                                     </span>
                                 </td>
                                 <td>{{ record[5] if record[5] else 'N/A' }}</td>
-                                <td>{{ record[4] if record[4] else '无' }}</td>
+                                <td>{{ record[4] if record[4] else 'None' }}</td>
                                 <td>{{ "%.3f"|format(record[3]) if record[3] else 'N/A' }}</td>
                             </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="6" class="no-data">暂无检测记录</td>
+                                <td colspan="6" class="no-data">No detection records</td>
                             </tr>
                         {% endif %}
                     </tbody>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="chart-section">
-                <h2>数据统计图表</h2>
+                <h2>Data Statistics Chart</h2>
                 <div class="chart-container">
                     <canvas id="statisticsChart"></canvas>
                 </div>

@@ -41,11 +41,11 @@ def init_camera():
     """初始化摄像头"""
     try:
         if camera.initialize():
-            return jsonify({'success': True, 'message': '摄像头初始化成功'})
+            return jsonify({'success': True, 'message': 'Camera initialized successfully'})
         else:
-            return jsonify({'success': False, 'message': '摄像头初始化失败，请检查摄像头是否连接'})
+            return jsonify({'success': False, 'message': 'Camera initialization failed, please check camera connection'})
     except Exception as e:
-        return jsonify({'success': False, 'message': f'错误: {str(e)}'})
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
 
 @app.route('/api/camera/capture', methods=['POST'])
 def capture_image():
@@ -53,9 +53,9 @@ def capture_image():
     try:
         image = camera.capture_image()
         if image is None:
-            return jsonify({'success': False, 'message': '图像捕获失败'})
+            return jsonify({'success': False, 'message': 'Image capture failed'})
         
-        # 转换为base64
+        # Convert to base64
         import io
         import base64
         buffered = io.BytesIO()
@@ -67,16 +67,16 @@ def capture_image():
             'image': img_str
         })
     except Exception as e:
-        return jsonify({'success': False, 'message': f'错误: {str(e)}'})
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
 
 @app.route('/api/detect', methods=['POST'])
 def detect_quality():
     """执行质量检测"""
     try:
-        # 获取图像数据
+        # Get image data
         data = request.get_json()
         if 'image' not in data:
-            return jsonify({'success': False, 'message': '缺少图像数据'})
+            return jsonify({'success': False, 'message': 'Missing image data'})
         
         # 解码base64图像
         import base64
@@ -95,9 +95,9 @@ def detect_quality():
         image_filename = f'static/images/detection_{timestamp}.jpg'
         image.save(image_filename)
         
-        # 保存检测记录
+        # Save detection record
         record_id = db.add_record(
-            result='合格' if result['qualified'] else '不合格',
+            result='Passed' if result['qualified'] else 'Failed',
             confidence=result['confidence'],
             image_path=image_filename,
             defect_type=result['defect_type'],
@@ -121,16 +121,16 @@ def detect_quality():
             'record_id': record_id
         })
     except Exception as e:
-        return jsonify({'success': False, 'message': f'检测错误: {str(e)}'})
+        return jsonify({'success': False, 'message': f'Detection error: {str(e)}'})
 
 @app.route('/api/camera/release', methods=['POST'])
 def release_camera():
     """释放摄像头"""
     try:
         camera.release()
-        return jsonify({'success': True, 'message': '摄像头已释放'})
+        return jsonify({'success': True, 'message': 'Camera released'})
     except Exception as e:
-        return jsonify({'success': False, 'message': f'错误: {str(e)}'})
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
 
 @app.route('/api/statistics', methods=['GET'])
 def get_statistics():
@@ -139,7 +139,7 @@ def get_statistics():
         stats = db.get_statistics()
         return jsonify({'success': True, 'data': stats})
     except Exception as e:
-        return jsonify({'success': False, 'message': f'错误: {str(e)}'})
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
 
 @app.route('/api/records', methods=['GET'])
 def get_records():
@@ -148,7 +148,7 @@ def get_records():
         limit = request.args.get('limit', 100, type=int)
         records = db.get_all_records(limit=limit)
         
-        # 转换为字典列表
+        # Convert to dictionary list
         records_list = []
         for record in records:
             records_list.append({
@@ -162,14 +162,14 @@ def get_records():
         
         return jsonify({'success': True, 'data': records_list})
     except Exception as e:
-        return jsonify({'success': False, 'message': f'错误: {str(e)}'})
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
 
 if __name__ == '__main__':
     print("=" * 50)
-    print("工业产品质量检测系统")
+    print("Industrial Product Quality Detection System")
     print("=" * 50)
-    print("正在启动服务器...")
-    print("请在浏览器中访问: http://localhost:5000")
+    print("Starting server...")
+    print("Please access in browser: http://localhost:5000")
     print("=" * 50)
     app.run(debug=True, host='0.0.0.0', port=5000)
 

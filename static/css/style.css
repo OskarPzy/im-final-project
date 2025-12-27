@@ -61,6 +61,9 @@ header h1 {
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .stat-card:hover {
@@ -96,6 +99,9 @@ header h1 {
     color: #666;
     text-transform: uppercase;
     letter-spacing: 1px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 /* 检测区域 */
@@ -117,6 +123,9 @@ header h1 {
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 .camera-panel h2, .result-panel h2 {
@@ -155,9 +164,11 @@ header h1 {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* 按钮样式 */
+/* Button Styles */
 .btn {
     padding: 12px 24px;
     border: none;
@@ -169,6 +180,9 @@ header h1 {
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    white-space: nowrap;
+    min-width: fit-content;
+    width: auto;
 }
 
 .btn:hover {
@@ -202,13 +216,15 @@ header h1 {
     color: #333;
 }
 
-/* 结果容器 */
+/* Result Container */
 .result-container {
     min-height: 200px;
     padding: 20px;
     background: white;
     border-radius: 10px;
     border: 2px solid #e0e0e0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .placeholder-message {
@@ -224,6 +240,10 @@ header h1 {
     background: #f8f9fa;
     border-radius: 8px;
     border-left: 4px solid #667eea;
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .result-item.success {
@@ -240,11 +260,15 @@ header h1 {
     font-weight: bold;
     color: #667eea;
     margin-bottom: 8px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .result-value {
     font-size: 1.1em;
     color: #333;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .badge {
@@ -301,11 +325,16 @@ header h1 {
     padding: 15px;
     text-align: left;
     font-weight: bold;
+    white-space: nowrap;
+    min-width: fit-content;
 }
 
 .history-table td {
     padding: 15px;
     border-bottom: 1px solid #e0e0e0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 200px;
 }
 
 .history-table tbody tr:hover {

@@ -1,5 +1,5 @@
 """
-数据库模型定义
+Database Model Definitions
 """
 from datetime import datetime
 import sqlite3
@@ -11,7 +11,7 @@ class Database:
         self.init_database()
     
     def init_database(self):
-        """初始化数据库表"""
+        """Initialize database tables"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -31,7 +31,7 @@ class Database:
         conn.close()
     
     def add_record(self, result, confidence, image_path=None, defect_type=None, quality_score=None):
-        """添加检测记录"""
+        """Add detection record"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -50,7 +50,7 @@ class Database:
         return record_id
     
     def get_all_records(self, limit=100):
-        """获取所有检测记录"""
+        """Get all detection records"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -67,23 +67,23 @@ class Database:
         return records
     
     def get_statistics(self):
-        """获取统计信息"""
+        """Get statistics"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
-        # 总检测次数
+        # Total detections
         cursor.execute('SELECT COUNT(*) FROM detection_records')
         total = cursor.fetchone()[0]
         
-        # 合格数量
-        cursor.execute('SELECT COUNT(*) FROM detection_records WHERE result = ?', ('合格',))
+        # Passed count (check both old Chinese and new English values for compatibility)
+        cursor.execute('SELECT COUNT(*) FROM detection_records WHERE result = ? OR result = ?', ('Passed', '合格'))
         passed = cursor.fetchone()[0]
         
-        # 不合格数量
-        cursor.execute('SELECT COUNT(*) FROM detection_records WHERE result = ?', ('不合格',))
+        # Failed count (check both old Chinese and new English values for compatibility)
+        cursor.execute('SELECT COUNT(*) FROM detection_records WHERE result = ? OR result = ?', ('Failed', '不合格'))
         failed = cursor.fetchone()[0]
         
-        # 平均质量分数
+        # Average quality score
         cursor.execute('SELECT AVG(quality_score) FROM detection_records WHERE quality_score IS NOT NULL')
         avg_score = cursor.fetchone()[0] or 0
         
